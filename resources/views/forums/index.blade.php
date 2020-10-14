@@ -3,12 +3,12 @@
 @section('content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-    	<h1 class="text-center text-mute"> {{ __("Foros") }} </h1>
+    	<h1 class="text-center text-mute"> {{ __("Foros (forums/index)") }} </h1>
 
     	@forelse($forums as $forum)
 	        <div class="panel panel-default">
 	            <div class="panel-heading panel-heading-forum">
-	                <a href="forums/{{ $forum->id }}"> {{ $forum->name }} </a>
+	                <a href="forums/{{ $forum->slug }}"> {{ $forum->name }} </a>
 					<span class="pull-right">
 						{{ __("Posts") }}: {{ $forum->posts->count() }}
 						{{ __("Respuestas") }}: {{ $forum->replies->count() }}
@@ -26,7 +26,31 @@
     	@endforelse
         @if($forums->count())
             {{ $forums->links() }}
-        @endif
+		@endif
+
+		<h2>{{ __("Añadir un nuevo foro") }}</h2>
+		<hr />
+		@include('partials.errors')
+
+		<form method="POST" action="forums">
+			{{ csrf_field() }}
+			<div class="form-group">
+				<label for="name" class="col-md-12 control-label">
+					{{ __("Nombre") }}
+				</label>
+				<input id="name" class="form-control" name="name" value="{{ old('name') }}"/>
+			</div>
+			<div class="form-group">
+				<label for="description" class="col-md-12 control-label">
+					{{ __("Descripción") }}
+				</label>
+				<input id="description" class="form-control" name="description" value="{{ old('description') }}"/>
+			</div>
+			<button type="submit" name="addForum" class="btn btn-default">
+				{{ __("Añadir Foro") }}
+			</button>
+		</form>
+
         </div>
     </div>
 @endsection

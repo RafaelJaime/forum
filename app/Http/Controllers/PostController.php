@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -12,5 +13,11 @@ class PostController extends Controller
 		$replies = $post->replies()->with('autor')->paginate(2);
 		
 		return view('posts.detail', compact('post','replies'));
+	}
+
+	public function store(PostRequest $post_request){
+		// $post_request->merge(['user_id'=>auth()->id()]);
+		Post::create($post_request->input()); // Esto coge todos los datos que vienen vía Post y los inserta
+    	return back()->with('message', ['success', __('Post creado correctamente')]);
 	}
 }

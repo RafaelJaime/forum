@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class Reply extends Model
 {
@@ -11,6 +12,16 @@ class Reply extends Model
     protected $fillable = [
         'user_id', 'post_id', 'reply',
     ];
+
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function($reply) {
+            if(!App::runningInConsole()){
+                $reply->user_id = auth()->id();
+            }
+        });
+    }
 
     protected  $appends = ['forum'];
 

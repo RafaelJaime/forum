@@ -10,7 +10,7 @@ class ForumController extends Controller
     public function index()
     {
         // $forums = Forum::all();
-        $forums = Forum::with(['replies','posts'])->paginate(5);
+        $forums = Forum::with(['replies','posts'])->paginate(2);
         return view('forums.index',compact('forums'));
     }       
 
@@ -23,4 +23,20 @@ class ForumController extends Controller
         // dd($posts);
         return view('forums.detail',compact('forum','posts'));
     }
+
+    public function store()
+	{
+        $this->validate(request(), [
+            'name' => 'required|max:100|unique:forums', // forums es la tabla dónde debe ser único
+            'description' => 'required|max:500',
+        ],
+        [
+            'name.required' => __("El campo NAME es requerido!!!!!")
+        ]);
+        
+		Forum::create(request()->all());
+		// La siguiente línea nos devuelve a la url anterior (si es que existe), o a la raíz
+		// y manda un mensaje, mediante una sesión flash, de éxito
+		return back()->with('message', ['success', __("Foro creado correctamente")]); 
+	}
 }

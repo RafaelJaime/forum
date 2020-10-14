@@ -18,6 +18,8 @@ class CreateForumsTable extends Migration
             $table->increments('id');
             $table->string('name');		// Nombre del Foro
             $table->text('description');	// Descripción del Foro
+            $table->string('slug');
+            $table->index('slug');
             $table->timestamps();
         });
     }

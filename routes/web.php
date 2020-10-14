@@ -13,10 +13,10 @@
 
 Route::get('/', 'ForumController@index');
 Route::get('/forums/{forum}', 'ForumController@show');
+Route::post('/forums', 'ForumController@store');
 
 Route::get('/posts/{post}', 'PostController@show');
+Route::post('/posts', 'PostController@store');
+Route::post('/replies', 'ReplyController@store');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
