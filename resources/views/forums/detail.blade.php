@@ -28,7 +28,31 @@
 
 	            <div class="panel-body">
 	                {{ $post->description }}
+
+					@if($post->attachment)
+						<?php
+							list($a,$b,$c,$d)=explode("/", $post->pathAttachment());
+							echo $d;
+							echo '<img src="'.$d.'" class="img-responsive img-rounded" />';
+						?>
+						
+					@endif
+
 	            </div>
+
+				@if($post->isOwner())
+					<div class="panel-footer">
+						<form method="POST" action="../posts/{{ $post->slug }}">
+							
+							{{ method_field('DELETE') }}
+							{{ csrf_field() }}
+							<button type="submit" name="deletePost" class="btn btn-danger">
+								{{ __("Eliminar post") }}
+							</button>
+						</form>
+					</div>
+				@endif
+
 	        </div>
     	@empty
 	    <div class="alert alert-danger">

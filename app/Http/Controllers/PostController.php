@@ -20,4 +20,12 @@ class PostController extends Controller
 		Post::create($post_request->input()); // Esto coge todos los datos que vienen vía Post y los inserta
     	return back()->with('message', ['success', __('Post creado correctamente')]);
 	}
+
+	public function destroy(Post $post) {
+		if( ! $post->isOwner())
+			abort(401);
+
+		$post->delete();
+		return back()->with('message', ['success', __('Post y respuestas eliminados correctamente')]);
+	}
 }
